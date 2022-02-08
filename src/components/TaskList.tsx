@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import '../styles/tasklist.scss'
 
@@ -13,6 +13,10 @@ interface Task {
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
+
+  function getRandomInt(max: number) {
+    return Math.floor(Math.random() * (Math.floor(max)));
+  }
 
   function handleCreateNewTask() {
     if (!newTaskTitle) return;
@@ -38,7 +42,7 @@ export function TaskList() {
           <input 
             type="text" 
             placeholder="Adicionar novo todo" 
-            onChange={(e) => setNewTaskTitle(e.target.value)}
+            onChange={(e) => setNewTaskTitle(e.target.value.replaceAll(/^\s+/g, ''))}
             value={newTaskTitle}
           />
           <button type="submit" data-testid="add-task-button" onClick={handleCreateNewTask}>
