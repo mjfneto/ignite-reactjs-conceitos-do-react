@@ -19,17 +19,18 @@ export function TaskList() {
   }
 
   function handleCreateNewTask() {
-    if (!newTaskTitle) return;
-    setTasks(tasks => [...tasks, { id: getRandomInt(2**10), title: newTaskTitle, isComplete: false }])
-    setNewTaskTitle('');
+    if (!newTaskTitle.trim()) return;
+    const random = Math.random();
+    const randomId = random * 10**(random.toString().length); 
+    setTasks(tasks => [...tasks, { id: randomId, title: newTaskTitle, isComplete: false}]);
   }
 
   function handleToggleTaskCompletion(id: number) {
-    setTasks(tasks => tasks.map(t => t.id === id ? {...t, isComplete: !t.isComplete} : t))
+    setTasks(tasks => tasks.map(t => t.id === id ? { ...t, isComplete: !t.isComplete } : t))
   }
 
   function handleRemoveTask(id: number) {
-    setTasks(tasks => tasks.filter(t => t.id !== id))
+    setTasks(tasks => tasks.filter(t => t.id !== id));
   }
 
   return (
@@ -41,7 +42,7 @@ export function TaskList() {
           <input 
             type="text" 
             placeholder="Adicionar novo todo" 
-            onChange={(e) => setNewTaskTitle(e.target.value.replaceAll(/^\s+/g, ''))}
+            onChange={(e) => setNewTaskTitle(e.target.value)}
             value={newTaskTitle}
           />
           <button type="submit" data-testid="add-task-button" onClick={handleCreateNewTask}>
