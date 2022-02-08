@@ -5,34 +5,30 @@ import '../styles/tasklist.scss'
 import { FiTrash, FiCheckSquare } from 'react-icons/fi'
 
 interface Task {
-  id: string;
+  id: number;
   title: string;
   isComplete: boolean;
-}
-
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * (Math.floor(max)));
-}
-
-function randomID(length = 15) {
-  return Array.from(Array(length)).map(() => getRandomInt(2**8).toString(16)).join('');
 }
 
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
+  function getRandomInt(max: number) {
+    return Math.floor(Math.random() * (Math.floor(max)));
+  }
+
   function handleCreateNewTask() {
     if (!newTaskTitle) return;
-    setTasks(tasks => [...tasks, { id: randomID(), title: newTaskTitle, isComplete: false }])
+    setTasks(tasks => [...tasks, { id: getRandomInt(2**10), title: newTaskTitle, isComplete: false }])
     setNewTaskTitle('');
   }
 
-  function handleToggleTaskCompletion(id: string) {
+  function handleToggleTaskCompletion(id: number) {
     setTasks(tasks => tasks.map(t => t.id === id ? {...t, isComplete: !t.isComplete} : t))
   }
 
-  function handleRemoveTask(id: string) {
+  function handleRemoveTask(id: number) {
     setTasks(tasks => tasks.filter(t => t.id !== id))
   }
 
